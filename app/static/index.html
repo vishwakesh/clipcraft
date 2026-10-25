@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131b">
+  <title>Minecraft Clipper</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="/"><span class="brand-mark">▣</span><span>BLOCK<span class="brand-accent">CUT</span></span></a>
+      <div class="top-note"><span class="live-dot"></span> SELF-HOSTED CLIP STUDIO</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">MINECRAFT CREATOR TOOLKIT</div>
+        <h1>Long video in.<br><span>Good moments out.</span></h1>
+        <p class="subhead">Find the clutch, the chaos, and the “HOW DID THAT HAPPEN?” moments — then turn them into vertical clips with word-timed captions.</p>
+      </section>
+
+      <section class="panel input-panel">
+        <div class="panel-heading">
+          <div><div class="section-kicker">01 / SOURCE</div><h2>Drop in your video</h2></div>
+          <span class="pill">YouTube</span>
+        </div>
+        <form id="create-form">
+          <label for="youtube-url">YouTube video URL</label>
+          <div class="url-row"><input id="youtube-url" name="youtube_url" type="url" placeholder="https://www.youtube.com/watch?v=…" required><button id="submit-btn" type="submit"><span>Find clips</span><span aria-hidden="true">↗</span></button></div>
+          <div class="form-grid">
+            <div><label for="top-n">Number of clips</label><select id="top-n" name="top_n"><option value="3">3 clips</option><option value="5" selected>5 clips</option><option value="8">8 clips</option><option value="10">10 clips</option><option value="15">15 clips</option></select></div>
+            <div><label for="language">Spoken language <span class="muted">(optional)</span></label><input id="language" name="language" type="text" maxlength="12" placeholder="Auto detect"></div>
+          </div>
+          <p class="fine-print">Only process videos you own or have permission to edit. First run may download the Whisper model.</p>
+        </form>
+      </section>
+
+      <section id="job-panel" class="panel job-panel hidden" aria-live="polite">
+        <div class="panel-heading"><div><div class="section-kicker">02 / PROCESS</div><h2 id="job-title">Preparing your clips</h2></div><span id="job-status" class="pill status-pill">Queued</span></div>
+        <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+        <div class="progress-meta"><span id="stage-label">Queued</span><strong id="progress-label">0%</strong></div>
+        <p id="job-message" class="job-message">Your video will move through download, transcription, highlight detection, and rendering.</p>
+      </section>
+
+      <section id="results-section" class="results-section hidden">
+        <div class="results-heading"><div><div class="section-kicker">03 / YOUR CLIPS</div><h2>Pick your next Short.</h2></div><span id="clip-count" class="clip-count">0 clips</span></div>
+        <div id="clips-list" class="clips-list"></div>
+      </section>
+      <section class="footer-note"><span class="footer-square">✦</span><span>Made for Minecraft creators. Your source video stays on your own server for re-renders.</span></section>
+    </main>
+  </div>
+  <template id="clip-template">
+    <article class="clip-card">
+      <div class="clip-preview"><video controls playsinline preload="metadata"></video><div class="clip-placeholder">Rendering vertical preview…</div></div>
+      <div class="clip-details">
+        <div class="clip-topline"><span class="clip-number"></span><span class="score-chip"></span></div>
+        <h3 class="clip-title"></h3><p class="clip-reason"></p>
+        <div class="clip-meta"><span class="clip-time"></span><span class="clip-render-status"></span></div>
+        <a class="download-link hidden" download>Download MP4 ↘</a>
+        <details class="edit-box"><summary>Edit timing & captions <span>＋</span></summary>
+          <form class="edit-form">
+            <div class="trim-row"><div><label>Start (sec)</label><input name="start" type="number" min="0" step="0.1" required></div><div><label>End (sec)</label><input name="end" type="number" min="20" step="0.1" required></div></div>
+            <div class="edit-grid"><div><label>Font</label><select name="font_name"><option>Poppins</option><option>Montserrat</option><option>Bangers</option><option>Minecraft</option></select></div><div><label>Size</label><input name="font_size" type="number" min="28" max="120" value="64"></div><div><label>Position</label><select name="position"><option value="lower">Lower third</option><option value="center">Center</option><option value="top">Top</option></select></div><div><label>Highlight</label><select name="highlight_color"><option value="yellow">Yellow</option><option value="cyan">Cyan</option><option value="green">Green</option><option value="white">White</option></select></div><div><label>Outline</label><input name="outline" type="number" min="1" max="10" value="4"></div></div>
+            <div class="edit-grid crop-grid"><div><label>Crop focus X</label><input name="crop_focus_x" type="number" min="0" max="1" step="0.05" value="0.5"></div><div><label>Crop focus Y</label><input name="crop_focus_y" type="number" min="0" max="1" step="0.05" value="0.5"></div></div>
+            <label class="checkbox-row"><input name="trim_silence" type="checkbox"> Trim long silent gaps</label>
+            <p class="edit-help">Render changes without repeating AI analysis or transcription. The font must be installed on the server for its exact look.</p>
+            <button class="rerender-btn" type="submit">Save & re-render ↻</button>
+          </form>
+        </details>
+      </div>
+    </article>
+  </template>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

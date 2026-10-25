@@ -1,0 +1,11 @@
+services:
+  clipper:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/app/data
+    init: true
+    # Keep this service bound to localhost. Expose it via a TLS reverse proxy after configuring auth.
